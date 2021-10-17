@@ -2,8 +2,9 @@ apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
   name: nginx-dst-rule
-  namespace: istio-system
 spec:
+  exportTo:
+  - "istio-system"
   host: nginx.apps.svc.cluster.local
   trafficPolicy:
     tls:
