@@ -12,6 +12,7 @@ spec:
       protocol: HTTP
     hosts:
     - nginx.tmanet.com
+    - red.tmanet.com
     tls:
       httpsRedirect: true
   - port:
@@ -23,6 +24,14 @@ spec:
     tls:
       credentialName: gw-credential
       mode: SIMPLE
+  - port:
+      number: 443
+      name: https-red
+      protocol: HTTPS
+    hosts:
+    - red.tmanet.com
+    tls:
+      mode: PASSTHROUGH
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
@@ -37,5 +46,25 @@ spec:
   - route:
     - destination:
         host: nginx
+        port:
+          number: 443
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: nginx-vs-red
+spec:
+  hosts:
+  - red.tmanet.com
+  gateways:
+  - nginx-gw
+  tls:
+  - match:
+    - port: 443
+      sniHosts:
+      - red.tmanet.com
+    route:
+    - destination:
+        host: nginx-red
         port:
           number: 443
