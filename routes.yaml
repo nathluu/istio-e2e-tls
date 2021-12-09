@@ -45,9 +45,8 @@ spec:
   http:
   - route:
     - destination:
-        host: nginx
-        port:
-          number: 443
+        host: nginx.apps.svc.cluster.local
+        subset: mutual
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
@@ -65,6 +64,5 @@ spec:
       - red.tmanet.com
     route:
     - destination:
-        host: nginx-red
-        port:
-          number: 443
+        host: nginx.apps.svc.cluster.local
+        subset: passthroughversion
