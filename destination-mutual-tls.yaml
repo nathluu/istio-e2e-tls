@@ -6,7 +6,13 @@ spec:
   exportTo:
   - "istio-system"
   host: nginx.apps.svc.cluster.local
-  trafficPolicy:
-    tls:
-      mode: MUTUAL
-      credentialName: client-credential
+  subsets:
+  - name: mutual
+    trafficPolicy:
+      tls:
+        mode: MUTUAL
+        credentialName: client-credential
+  - name: passthroughversion
+    trafficPolicy:
+      tls:
+        mode: DISABLE
