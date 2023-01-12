@@ -24,8 +24,7 @@ kubectl label namespace apps istio-injection=enabled
 kubectl create -n istio-system secret generic gw-credential --from-file=tls.key=gw.tmanet.com.key \
 --from-file=tls.crt=gw.tmanet.com.crt --from-file=ca.crt=tmanet.com.crt
 # kubectl create -n istio-system secret tls gw-credential --cert=gw.tmanet.com.crt --key=gw.tmanet.com.key --cacert=tmanet.com.crt # Another way to create k8s secret for TLS
-kubectl create -n istio-system secret generic client-credential --from-file=tls.key=client.gateway.key \
---from-file=tls.crt=client.gateway.crt --from-file=ca.crt=tmanet.com.crt
+# kubectl create -n istio-system secret generic client-credential --from-file=tls.key=client.gateway.key --from-file=tls.crt=client.gateway.crt --from-file=ca.crt=tmanet.com.crt # Use this command for mTLS
 ```
 **Step 5:** Create configmap and secret for nginx server  
 ```bash
@@ -38,7 +37,7 @@ kubectl create -n apps secret generic nginx-server-certs --from-file=tls.key=ngi
 ```bash
 kubectl apply -n apps -f apps.yaml
 kubectl apply -n apps -f routes.yaml
-kubectl apply -f destination.yaml
+kubectl apply -n apps -f destination.yaml
 # kubectl apply -f destination-mutual-tls.yaml # Use this command for mTLS
 ```
 **Step 5:** Verify  
